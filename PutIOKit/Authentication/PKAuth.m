@@ -62,9 +62,9 @@ NSString * const kPKOAuthCredentialIdentifier = @"PutIOKitCredential";
     return [AFOAuthCredential retrieveCredentialWithIdentifier:kPKOAuthCredentialIdentifier];
 }
 
-- (NSString *)apiSecret {
-    NSAssert(_apiSecret != nil, @"API secret must be set before any calls to this class are made.");
-    return _apiSecret;
+- (NSString *)APISecret {
+    NSAssert(_APISecret != nil, @"API secret must be set before any calls to this class are made.");
+    return _APISecret;
 }
 
 - (NSString *)clientID {

@@ -110,7 +110,7 @@ typedef void (^PKAuthCallback)(NSError * _Nullable error, AFOAuthCredential * _N
  
  @warning This property @b MUST be set before @b ANY calls are made to @b ANY method on this class otherwise an exception will be raised.
  */
-@property (strong, nonatomic) NSString *apiSecret;
+@property (strong, nonatomic) NSString *APISecret NS_SWIFT_NAME(apiSecret);
 
 /**
  Your "CALLBACK URL" obtained from @b Put.io.
