@@ -36,32 +36,32 @@ FOUNDATION_EXPORT const unsigned char PutIOKitVersionString[];
 
 #pragma mark - Models
 
-#import <PutIOKit/PKErrorOnlyCallback.h>
-#import <PutIOKit/PKFile.h>
-#import <PutIOKit/PKShare.h>
-#import <PutIOKit/PKShareRecipient.h>
-#import <PutIOKit/PKSubtitle.h>
-#import <PutIOKit/PKSubtitleFormat.h>
-#import <PutIOKit/PKEventType.h>
-#import <PutIOKit/PKEvent.h>
-#import <PutIOKit/PKMP4Status.h>
-#import <PutIOKit/PKMP4Conversion.h>
-#import <PutIOKit/PKTransferStatus.h>
-#import <PutIOKit/PKTransfer.h>
-#import <PutIOKit/PKFriend.h>
-#import <PutIOKit/PKAccount.h>
-#import <PutIOKit/PKAccountSettings.h>
+#import <PutIOKit/PIOErrorOnlyCallback.h>
+#import <PutIOKit/PIOFile.h>
+#import <PutIOKit/PIOShare.h>
+#import <PutIOKit/PIOShareRecipient.h>
+#import <PutIOKit/PIOSubtitle.h>
+#import <PutIOKit/PIOSubtitleFormat.h>
+#import <PutIOKit/PIOEventType.h>
+#import <PutIOKit/PIOEvent.h>
+#import <PutIOKit/PIOMP4Status.h>
+#import <PutIOKit/PIOMP4Conversion.h>
+#import <PutIOKit/PIOTransferStatus.h>
+#import <PutIOKit/PIOTransfer.h>
+#import <PutIOKit/PIOFriend.h>
+#import <PutIOKit/PIOAccount.h>
+#import <PutIOKit/PIOAccountSettings.h>
 
 #pragma mark - Methods
 
-#import <PutIOKit/PKAPI.h>
-#import <PutIOKit/PKAPI+Files.h>
-#import <PutIOKit/PKAPI+Transfers.h>
-#import <PutIOKit/PKAPI+Friends.h>
-#import <PutIOKit/PKAPI+Account.h>
+#import <PutIOKit/PIOAPI.h>
+#import <PutIOKit/PIOAPI+Files.h>
+#import <PutIOKit/PIOAPI+Transfers.h>
+#import <PutIOKit/PIOAPI+Friends.h>
+#import <PutIOKit/PIOAPI+Account.h>
 
 #pragma mark - Authentication
 
-#import <PutIOKit/PKAuthenticatorDelegate.h>
-#import <PutIOKit/PKAuth.h>
+#import <PutIOKit/PIOAuthenticatorDelegate.h>
+#import <PutIOKit/PIOAuth.h>
 #import <PutIOKit/AFOAuthCredential.h>
