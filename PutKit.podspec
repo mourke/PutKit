@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PutKit'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Objective-C bindings for the Put.io API'
   s.homepage         = 'https://github.com/mourke/PutKit'
   s.license          = { :type => 'MIT', :text => <<-LICENSE
