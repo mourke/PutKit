@@ -36,33 +36,43 @@
     self = [super init];
     
     if (self) {
-        _contentType = [[dictionary objectForKey:@"content_type"] stringValue];
-        _iconURL = [NSURL URLWithString:[[dictionary objectForKey:@"icon"] stringValue]];
+        _contentType = [dictionary objectForKey:@"content_type"];
+        _iconURL = [NSURL URLWithString:[dictionary objectForKey:@"icon"]];
         _identifier = [[dictionary objectForKey:@"id"] integerValue];
-        _name = [[dictionary objectForKey:@"name"] stringValue];
-        _parentIdentifier = [[dictionary objectForKey:@"parent_id"] integerValue];
+        _name = [dictionary objectForKey:@"name"];
         _size = [[dictionary objectForKey:@"size"] integerValue];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
         
-        _dateOfCreation = [dateFormatter dateFromString:[[dictionary objectForKey:@"created_at"] stringValue]];
+        _dateOfCreation = [dateFormatter dateFromString:[dictionary objectForKey:@"created_at"]];
         
         if (!isnan(_identifier) &&
             _contentType != nil &&
             _iconURL != nil &&
             !isnan(_identifier) &&
             _name != nil &&
-            !isnan(_parentIdentifier) &&
             !isnan(_size) &&
             _dateOfCreation != nil)
         {
-            _cyclicRedundancyCode = [[dictionary objectForKey:@"crc32"] stringValue];
-            _dateFirstAccessed = [dateFormatter dateFromString:[[dictionary objectForKey:@"first_accessed_at"] stringValue]];
             _MP4Available = [[dictionary objectForKey:@"is_mp4_available"] boolValue];
             _shared = [[dictionary objectForKey:@"is_shared"] boolValue];
-            _openSubtitlesHash = [[dictionary objectForKey:@"opensubtitles_hash"] stringValue];
-            _screenshotURL = [NSURL URLWithString:[[dictionary objectForKey:@"screenshot"] stringValue]];
+            
+            NSString *cyclicRedundancyCode = [dictionary objectForKey:@"crc32"];
+            if ([cyclicRedundancyCode isKindOfClass:NSString.class]) _cyclicRedundancyCode = cyclicRedundancyCode;
+            
+            NSString *openSubtitlesHash = [dictionary objectForKey:@"opensubtitles_hash"];
+            if ([openSubtitlesHash isKindOfClass:NSString.class]) _openSubtitlesHash = openSubtitlesHash;
+            
+            id parentIdentifier = [dictionary objectForKey:@"parent_id"];
+            if (parentIdentifier != [NSNull null]) _parentIdentifier = [parentIdentifier integerValue];
+            
+            NSString *screenshotString = [dictionary objectForKey:@"screenshot"];
+            if ([screenshotString isKindOfClass:NSString.class]) _screenshotURL = [NSURL URLWithString:screenshotString];
+            
+            NSString *dateFirstAccessedString = [dictionary objectForKey:@"first_accessed_at"];
+            
+            if ([dateFirstAccessedString isKindOfClass:NSString.class]) _dateFirstAccessed = [dateFormatter dateFromString: dateFirstAccessedString];
             
             return self;
         }

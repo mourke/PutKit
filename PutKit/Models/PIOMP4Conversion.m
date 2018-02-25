@@ -37,7 +37,7 @@
     self = [super init];
     
     if (self) {
-        _status = [[dictionary objectForKey:@"status"] stringValue];
+        _status = [dictionary objectForKey:@"status"];
         _percentageCompleted = [[dictionary objectForKey:@"percent_done"] integerValue];
         _size = [[dictionary objectForKey:@"size"] integerValue];
         

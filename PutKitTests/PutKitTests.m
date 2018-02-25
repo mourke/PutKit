@@ -1,6 +1,6 @@
 //
-//  PIOSubtitle.m
-//  PutKit
+//  PutKitTests.m
+//  PutKitTests
 //
 //  Copyright © 2018 Mark Bourke.
 //
@@ -23,35 +23,33 @@
 //  THE SOFTWARE
 //
 
-#import "PIOSubtitle.h"
-#import "PIOObjectProtocol.h"
+#import <XCTest/XCTest.h>
+#import <PutKit/PutKit.h>
 
-@interface PIOSubtitle() <PIOObjectProtocol>
+@interface PutKitTests : XCTestCase
 
 @end
 
-@implementation PIOSubtitle
+@implementation PutKitTests
 
+- (void)setUp {
+    [super setUp];
+    
+}
 
-- (nullable instancetype)initFromDictionary:(NSDictionary *)dictionary {
-    self = [super init];
+- (void)testFiles {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"List files"];
     
-    if (self) {
-        _name = [dictionary objectForKey:@"name"];
-        _key = [dictionary objectForKey:@"key"];
-        _language = [dictionary objectForKey:@"language"];
-        _source = [dictionary objectForKey:@"source"];
-        
-        if (_name != nil &&
-            _key != nil &&
-            _language != nil &&
-            _source != nil)
-        {
-            return self;
-        }
-    }
+    [[PIOAPI listFilesInFolderWithID:0 callback:^(NSError * _Nullable error,
+                                                  NSArray<PIOFile *> * _Nonnull files,
+                                                  PIOFile * _Nullable parent) {
+        XCTAssertNil(error, @"Failed to load movies %@", error);
+        XCTAssertFalse(files.count == 0, @"Results were empty");
+        XCTAssertNotNil(parent, @"Failed to create parent");
+        [expectation fulfill];
+    }] resume];
     
-    return nil;
+    [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 @end

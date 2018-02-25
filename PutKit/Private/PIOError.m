@@ -28,8 +28,8 @@
 BOOL pk_response_validate(NSData *responseData, NSError * *error) {
     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:error];
     
-    NSString *errorMessage = [[responseDictionary objectForKey:@"error_message"] stringValue];
-    NSString *errorTitle = [[responseDictionary objectForKey:@"error_type"] stringValue];
+    NSString *errorMessage = [responseDictionary objectForKey:@"error_message"];
+    NSString *errorTitle = [responseDictionary objectForKey:@"error_type"];
     NSUInteger errorCode = [[responseDictionary objectForKey:@"status_code"] unsignedIntegerValue];
     
     if (errorMessage != nil && !isnan(errorCode) && errorTitle != nil) {

@@ -39,12 +39,12 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
         
-        _dateOfCreation = [dateFormatter dateFromString:[[dictionary objectForKey:@"created_at"] stringValue]];
+        _dateOfCreation = [dateFormatter dateFromString:[dictionary objectForKey:@"created_at"]];
         _seedToPeerRatio = [[dictionary objectForKey:@"current_ratio"] floatValue];
         _downloadSpeed = [[dictionary objectForKey:@"down_speed"] doubleValue];
         _totalDownloaded = [[dictionary objectForKey:@"downloaded"] integerValue];
         _identifier = [[dictionary objectForKey:@"id"] integerValue];
-        _name = [[dictionary objectForKey:@"name"] stringValue];
+        _name = [dictionary objectForKey:@"name"];
         _peers = [[dictionary objectForKey:@"peers_connected"] integerValue];
         _peersLeaching = [[dictionary objectForKey:@"peers_getting_from_us"] integerValue];
         _peersGiving = [[dictionary objectForKey:@"peers_sending_to_us"] integerValue];
@@ -52,8 +52,8 @@
         _parentIdentifier = [[dictionary objectForKey:@"save_parent_id"] integerValue];
         _timeSeeding = [[dictionary objectForKey:@"seconds_seeding"] doubleValue];
         _size = [[dictionary objectForKey:@"size"] integerValue];
-        _status = [[dictionary objectForKey:@"status"] stringValue];
-        _statusMessage = [[dictionary objectForKey:@"status_message"] stringValue];
+        _status = [dictionary objectForKey:@"status"];
+        _statusMessage = [dictionary objectForKey:@"status_message"];
         _uploadSpeed = [[dictionary objectForKey:@"up_speed"] doubleValue];
         _totalUploaded = [[dictionary objectForKey:@"uploaded"] doubleValue];
         
@@ -75,20 +75,33 @@
             !isnan(_uploadSpeed) &&
             !isnan(_totalUploaded))
         {
-            _callbackURL = [NSURL URLWithString:[[dictionary objectForKey:@"callback_url"] stringValue]];
-            NSString *errorMessage = [[dictionary objectForKey:@"error_message"] stringValue];
+            _callbackURL = [NSURL URLWithString:[dictionary objectForKey:@"callback_url"]];
+            NSString *errorMessage = [dictionary objectForKey:@"error_message"];
             if (errorMessage != nil) {
                 _error = [NSError errorWithDomain:@"io.put.kit.error" code:-1 userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
             }
             
-            _estimatedTimeRemaining = [[dictionary objectForKey:@"estimated_time"] integerValue];
+            id estimatedTimeRemaining = [dictionary objectForKey:@"estimated_time"];
+            if (estimatedTimeRemaining != [NSNull null]) _estimatedTimeRemaining = [estimatedTimeRemaining doubleValue];
+            
+            id fileIdentifier = [dictionary objectForKey:@"file_id"];
+            if (fileIdentifier != [NSNull null]) _fileIdentifier = [fileIdentifier integerValue];
+            
+            id source = [dictionary objectForKey:@"source"];
+            if ([source isKindOfClass:NSString.class]) _source = source;
+            
+            id subscriptionIdentifier = [dictionary objectForKey:@"subscription_id"];
+            if (subscriptionIdentifier != [NSNull null]) _subscriptionIdentifier = [subscriptionIdentifier integerValue];
+            
+            id trackerMessage = [dictionary objectForKey:@"tracker_message"];
+            if ([trackerMessage isKindOfClass:NSString.class]) _trackerMessage = trackerMessage;
+            
+            NSString *dateFinishedString = [dictionary objectForKey:@"finished_at"];
+            
+            if (dateFinishedString != nil) _dateFinished = [dateFormatter dateFromString:dateFinishedString];
+            
             _willExtract = [[dictionary objectForKey:@"extract"] boolValue];
-            _fileIdentifier = [[dictionary objectForKey:@"file_id"] integerValue];
-            _dateFinished = [dateFormatter dateFromString:[[dictionary objectForKey:@"finished_at"] stringValue]];
             _private = [[dictionary objectForKey:@"is_private"] boolValue];
-            _source = [[dictionary objectForKey:@"source"] stringValue];
-            _subscriptionIdentifier = [[dictionary objectForKey:@"subscription_id"] integerValue];
-            _trackerMessage = [[dictionary objectForKey:@"tracker_message"] stringValue];
             
             return self;
         }

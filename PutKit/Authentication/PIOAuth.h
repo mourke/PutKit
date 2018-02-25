@@ -75,7 +75,7 @@ typedef void (^PIOAuthCallback)(NSError * _Nullable error, AFOAuthCredential * _
 /**
  The first step in user authentication.  Returns the sign in URL to which the user should be navigated in order to complete the rest of the authentication process. Upon visiting this URL and successfully logging in, a 'code' will be passed into the application. This code must be passed to the `credentialForCode:callback:` method to finish authentication.
  */
-@property (strong, nonatomic) NSURL *signInURL;
+@property (strong, nonatomic, readonly) NSURL *signInURL;
 
 /**
  The last step in user authentication.

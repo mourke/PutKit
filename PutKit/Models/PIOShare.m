@@ -37,10 +37,10 @@
     
     if (self) {
         _fileIdentifier = [[dictionary objectForKey:@"id"] integerValue];
-        _fileName = [[dictionary objectForKey:@"name"] stringValue];
+        _fileName = [dictionary objectForKey:@"name"];
         id sharedWith = [dictionary objectForKey:@"shared_with"];
         
-        _numberOfPeopleSharedWith = [sharedWith stringValue] != nil ? -1 : [sharedWith integerValue];
+        _numberOfPeopleSharedWith = [sharedWith isKindOfClass:NSString.class] ? -1 : [sharedWith integerValue];
         
         if (!isnan(_fileIdentifier) && _fileName != nil && !isnan(_numberOfPeopleSharedWith)) return self;
     }

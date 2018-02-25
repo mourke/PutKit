@@ -36,10 +36,10 @@
     self = [super init];
     
     if (self) {
-        _username = [[dictionary objectForKey:@"username"] stringValue];
-        _emailAddress = [[dictionary objectForKey:@"mail"] stringValue];
+        _username = [dictionary objectForKey:@"username"];
+        _emailAddress = [dictionary objectForKey:@"mail"];
         _subtitleLanguageCodes = [dictionary objectForKey:@"subtitle_languages"];
-        _defaultSubtitleLanguageCode = [[dictionary objectForKey:@"default_subtitle_language"] stringValue];
+        _defaultSubtitleLanguageCode = [dictionary objectForKey:@"default_subtitle_language"];
         
         NSDictionary *diskDictionary = [dictionary objectForKey:@"disk"];
         
@@ -51,7 +51,7 @@
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
         
-        _planExpiryDate = [dateFormatter dateFromString:[[dictionary objectForKey:@"plan_expiration_date"] stringValue]];
+        NSString *planExpiryDateString = [dictionary objectForKey:@"plan_expiration_date"];
         
         if (_username != nil &&
             _emailAddress != nil &&
@@ -59,8 +59,11 @@
             _defaultSubtitleLanguageCode != nil &&
             !isnan(_diskSpaceAvailable) &&
             !isnan(_diskSpaceUsed) &&
-            !isnan(_totalDiskSize))
+            !isnan(_totalDiskSize) &&
+            planExpiryDateString != nil)
         {
+            _planExpiryDate = [dateFormatter dateFromString:planExpiryDateString];
+            
             return self;
         }
     }

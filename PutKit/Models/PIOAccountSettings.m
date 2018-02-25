@@ -36,18 +36,15 @@
     self = [super init];
     
     if (self) {
-        NSArray *subtitleLanguageCodes = [dictionary objectForKey:@"subtitle_languages"];
-        NSString *defaultSubtitleLanguageCode = [[dictionary objectForKey:@"default_subtitle_language"] stringValue];
-        NSInteger defaultDownloadFolderIdentifier = [[dictionary objectForKey:@"default_download_folder"] integerValue];
+        _subtitleLanguageCodes = [dictionary objectForKey:@"subtitle_languages"];
+        _defaultSubtitleLanguageCode = [dictionary objectForKey:@"default_subtitle_language"];
+        _defaultDownloadFolderIdentifier = [[dictionary objectForKey:@"default_download_folder"] integerValue];
         
-        if (subtitleLanguageCodes != nil &&
-            defaultSubtitleLanguageCode != nil &&
-            !isnan(defaultDownloadFolderIdentifier))
+        if (_subtitleLanguageCodes != nil &&
+            _defaultSubtitleLanguageCode != nil &&
+            !isnan(_defaultDownloadFolderIdentifier))
         {
             _invisible = [[dictionary objectForKey:@"is_invisible"] boolValue];
-            _subtitleLanguageCodes = subtitleLanguageCodes;
-            _defaultSubtitleLanguageCode = defaultSubtitleLanguageCode;
-            _defaultDownloadFolderIdentifier = defaultDownloadFolderIdentifier;
             
             return self;
         }

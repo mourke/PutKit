@@ -107,7 +107,7 @@
             }
         }
         
-        NSURL *nextPageURL = [NSURL URLWithString:[[responseDictionary objectForKey:@"next"] stringValue]];
+        NSURL *nextPageURL = [NSURL URLWithString:[responseDictionary objectForKey:@"next"]];
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             callback(error, files, nextPageURL);

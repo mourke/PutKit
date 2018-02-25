@@ -36,7 +36,7 @@
     self = [super init];
     
     if (self) {
-        _username = [[dictionary objectForKey:@"name"] stringValue];
+        _username = [dictionary objectForKey:@"name"];
         
         if (_username != nil) return self;
     }

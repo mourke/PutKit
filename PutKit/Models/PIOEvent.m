@@ -36,28 +36,29 @@
     self = [super init];
     
     if (self) {
-        _type = [[dictionary objectForKey:@"type"] stringValue];
+        _type = [dictionary objectForKey:@"type"];
         
         if (_type == nil) return nil;
         
         if ([_type isEqualToString:PIOEventTypeFileShared] || [_type isEqualToString:PIOEventTypeZipCreated]) {
-            _name = [[dictionary objectForKey:@"file_name"] stringValue];
+            _name = [dictionary objectForKey:@"file_name"];
             _size = [[dictionary objectForKey:@"file_size"] integerValue];
         } else {
-            _name = [[dictionary objectForKey:@"transfer_name"] stringValue];
+            _name = [dictionary objectForKey:@"transfer_name"];
             _size = [[dictionary objectForKey:@"transfer_size"] integerValue];
         }
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
         
-        _dateOfCreation = [dateFormatter dateFromString:[[dictionary objectForKey:@"created_at"] stringValue]];
+        _dateOfCreation = [dateFormatter dateFromString:[dictionary objectForKey:@"created_at"]];
         
         if (_name != nil &&
             !isnan(_size) &&
             _dateOfCreation != nil)
         {
-            _sharingUsername = [[dictionary objectForKey:@"sharing_user_name"] stringValue];
+            NSString *sharingUsername = [dictionary objectForKey:@"sharing_user_name"];
+            if ([sharingUsername isKindOfClass:NSString.class]) _sharingUsername = sharingUsername;
             
             return self;
         }

@@ -207,7 +207,37 @@
 		4DAEEBC020423DA300F62548 /* PIOAPI+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAEEBBA20423DA300F62548 /* PIOAPI+Account.m */; };
 		4DAEEBC120423DA300F62548 /* PIOAPI+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAEEBBA20423DA300F62548 /* PIOAPI+Account.m */; };
 		4DAEEBC220423DA300F62548 /* PIOAPI+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAEEBBA20423DA300F62548 /* PIOAPI+Account.m */; };
+		4DAEECCD20431C6A00F62548 /* PutKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAEECCC20431C6A00F62548 /* PutKitTests.m */; };
+		4DAEECCF20431C6A00F62548 /* PutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D20554820385E9A00AE832F /* PutKit.framework */; };
+		4DAEECDE20431CA300F62548 /* PutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D20555820385ED200AE832F /* PutKit.framework */; };
+		4DAEECE420431CB500F62548 /* PutKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAEECCC20431C6A00F62548 /* PutKitTests.m */; };
+		4DAEECEE20431CC500F62548 /* PutKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D20556520385F7900AE832F /* PutKit.framework */; };
+		4DAEECF420431CD600F62548 /* PutKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DAEECCC20431C6A00F62548 /* PutKitTests.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4DAEECD020431C6A00F62548 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4D20553F20385E9A00AE832F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D20554720385E9A00AE832F;
+			remoteInfo = "PutKit iOS";
+		};
+		4DAEECDF20431CA300F62548 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4D20553F20385E9A00AE832F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D20555720385ED200AE832F;
+			remoteInfo = "PutKit tvOS";
+		};
+		4DAEECEF20431CC500F62548 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4D20553F20385E9A00AE832F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4D20556420385F7900AE832F;
+			remoteInfo = "PutKit macOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4D20554820385E9A00AE832F /* PutKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PutKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -265,6 +295,11 @@
 		4DAEEBB02042373E00F62548 /* PIOAPI+Friends.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PIOAPI+Friends.m"; sourceTree = "<group>"; };
 		4DAEEBB920423DA300F62548 /* PIOAPI+Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PIOAPI+Account.h"; sourceTree = "<group>"; };
 		4DAEEBBA20423DA300F62548 /* PIOAPI+Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "PIOAPI+Account.m"; sourceTree = "<group>"; };
+		4DAEECCA20431C6A00F62548 /* PutKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PutKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DAEECCC20431C6A00F62548 /* PutKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PutKitTests.m; sourceTree = "<group>"; };
+		4DAEECCE20431C6A00F62548 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DAEECD920431CA300F62548 /* PutKit tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PutKit tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DAEECE920431CC500F62548 /* PutKit macOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PutKit macOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,6 +331,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4DAEECC720431C6A00F62548 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DAEECCF20431C6A00F62548 /* PutKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECD620431CA300F62548 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DAEECDE20431CA300F62548 /* PutKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECE620431CC500F62548 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DAEECEE20431CC500F62548 /* PutKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -304,6 +363,7 @@
 			children = (
 				4D20556D20385FDB00AE832F /* Framework */,
 				4D20554A20385E9A00AE832F /* PutKit */,
+				4DAEECCB20431C6A00F62548 /* PutKitTests */,
 				4D20554920385E9A00AE832F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -315,6 +375,9 @@
 				4D20555820385ED200AE832F /* PutKit.framework */,
 				4D20556520385F7900AE832F /* PutKit.framework */,
 				4D2055732038604400AE832F /* PutKit.framework */,
+				4DAEECCA20431C6A00F62548 /* PutKit iOS Tests.xctest */,
+				4DAEECD920431CA300F62548 /* PutKit tvOS Tests.xctest */,
+				4DAEECE920431CC500F62548 /* PutKit macOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -422,6 +485,15 @@
 				4D20560D203C964E00AE832F /* AFOAuthCredential.m */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4DAEECCB20431C6A00F62548 /* PutKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				4DAEECCC20431C6A00F62548 /* PutKitTests.m */,
+				4DAEECCE20431C6A00F62548 /* Info.plist */,
+			);
+			path = PutKitTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -638,6 +710,60 @@
 			productReference = 4D2055732038604400AE832F /* PutKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		4DAEECC920431C6A00F62548 /* PutKit iOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DAEECD420431C6A00F62548 /* Build configuration list for PBXNativeTarget "PutKit iOS Tests" */;
+			buildPhases = (
+				4DAEECC620431C6A00F62548 /* Sources */,
+				4DAEECC720431C6A00F62548 /* Frameworks */,
+				4DAEECC820431C6A00F62548 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAEECD120431C6A00F62548 /* PBXTargetDependency */,
+			);
+			name = "PutKit iOS Tests";
+			productName = "PutKit iOS Tests";
+			productReference = 4DAEECCA20431C6A00F62548 /* PutKit iOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4DAEECD820431CA300F62548 /* PutKit tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DAEECE120431CA300F62548 /* Build configuration list for PBXNativeTarget "PutKit tvOS Tests" */;
+			buildPhases = (
+				4DAEECD520431CA300F62548 /* Sources */,
+				4DAEECD620431CA300F62548 /* Frameworks */,
+				4DAEECD720431CA300F62548 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAEECE020431CA300F62548 /* PBXTargetDependency */,
+			);
+			name = "PutKit tvOS Tests";
+			productName = "PutKit tvOS Tests";
+			productReference = 4DAEECD920431CA300F62548 /* PutKit tvOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4DAEECE820431CC500F62548 /* PutKit macOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DAEECF120431CC500F62548 /* Build configuration list for PBXNativeTarget "PutKit macOS Tests" */;
+			buildPhases = (
+				4DAEECE520431CC500F62548 /* Sources */,
+				4DAEECE620431CC500F62548 /* Frameworks */,
+				4DAEECE720431CC500F62548 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DAEECF020431CC500F62548 /* PBXTargetDependency */,
+			);
+			name = "PutKit macOS Tests";
+			productName = "PutKit macOS Tests";
+			productReference = 4DAEECE920431CC500F62548 /* PutKit macOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -664,6 +790,18 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
+					4DAEECC920431C6A00F62548 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					4DAEECD820431CA300F62548 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					4DAEECE820431CC500F62548 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 4D20554220385E9A00AE832F /* Build configuration list for PBXProject "PutKit" */;
@@ -682,6 +820,9 @@
 				4D20555720385ED200AE832F /* PutKit tvOS */,
 				4D20556420385F7900AE832F /* PutKit macOS */,
 				4D2055722038604400AE832F /* PutKit watchOS */,
+				4DAEECC920431C6A00F62548 /* PutKit iOS Tests */,
+				4DAEECD820431CA300F62548 /* PutKit tvOS Tests */,
+				4DAEECE820431CC500F62548 /* PutKit macOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -709,6 +850,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		4D2055712038604400AE832F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECC820431C6A00F62548 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECD720431CA300F62548 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECE720431CC500F62548 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -838,7 +1000,49 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4DAEECC620431C6A00F62548 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DAEECCD20431C6A00F62548 /* PutKitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECD520431CA300F62548 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DAEECE420431CB500F62548 /* PutKitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4DAEECE520431CC500F62548 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DAEECF420431CD600F62548 /* PutKitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4DAEECD120431C6A00F62548 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D20554720385E9A00AE832F /* PutKit iOS */;
+			targetProxy = 4DAEECD020431C6A00F62548 /* PBXContainerItemProxy */;
+		};
+		4DAEECE020431CA300F62548 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D20555720385ED200AE832F /* PutKit tvOS */;
+			targetProxy = 4DAEECDF20431CA300F62548 /* PBXContainerItemProxy */;
+		};
+		4DAEECF020431CC500F62548 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4D20556420385F7900AE832F /* PutKit macOS */;
+			targetProxy = 4DAEECEF20431CC500F62548 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4D20554E20385E9A00AE832F /* Debug */ = {
@@ -1120,6 +1324,99 @@
 			};
 			name = Release;
 		};
+		4DAEECD220431C6A00F62548 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQBJ6NTPEG;
+				INFOPLIST_FILE = PutKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.put.kit.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4DAEECD320431C6A00F62548 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQBJ6NTPEG;
+				ENABLE_NS_ASSERTIONS = NO;
+				INFOPLIST_FILE = PutKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.put.kit.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4DAEECE220431CA300F62548 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQBJ6NTPEG;
+				INFOPLIST_FILE = PutKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.put.kit.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Debug;
+		};
+		4DAEECE320431CA300F62548 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BQBJ6NTPEG;
+				ENABLE_NS_ASSERTIONS = NO;
+				INFOPLIST_FILE = PutKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.put.kit.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Release;
+		};
+		4DAEECF220431CC500F62548 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BQBJ6NTPEG;
+				INFOPLIST_FILE = PutKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = io.put.kit.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4DAEECF320431CC500F62548 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BQBJ6NTPEG;
+				ENABLE_NS_ASSERTIONS = NO;
+				INFOPLIST_FILE = PutKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = io.put.kit.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1164,6 +1461,33 @@
 			buildConfigurations = (
 				4D2055792038604400AE832F /* Debug */,
 				4D20557A2038604400AE832F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4DAEECD420431C6A00F62548 /* Build configuration list for PBXNativeTarget "PutKit iOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DAEECD220431C6A00F62548 /* Debug */,
+				4DAEECD320431C6A00F62548 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4DAEECE120431CA300F62548 /* Build configuration list for PBXNativeTarget "PutKit tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DAEECE220431CA300F62548 /* Debug */,
+				4DAEECE320431CA300F62548 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4DAEECF120431CC500F62548 /* Build configuration list for PBXNativeTarget "PutKit macOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DAEECF220431CC500F62548 /* Debug */,
+				4DAEECF320431CC500F62548 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
