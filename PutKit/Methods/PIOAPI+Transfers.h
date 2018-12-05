@@ -45,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Starts a new transfer.
  
+ @note  Due to `NSTimer` APIs, this method is only available on systems greater than: iOS 10.0, tvOS 10.0, watchOS 3.0 and macOS 10.12.
+ 
  @param URL                 The link (magnet, torrent, direct file URL etc.) to the transfer that is to be started.
  @param parentIdentifier    The identifier of the folder in which the completed transfer is to be saved.
  @param callbackURL         An optional URL to which transfer metadata will be posted once the transfer successfully completes.
@@ -56,6 +58,27 @@ NS_ASSUME_NONNULL_BEGIN
                         saveFolderIdentifier:(NSInteger)parentIdentifier
                                  callbackURL:(NSURL * _Nullable)callbackURL
                                     callback:(void (^)(NSError * _Nullable, PIOTransfer * _Nullable))callback NS_SWIFT_NAME(addTransfer(url:saveFolder:callbackURL:callback:));
+
+/**
+ Starts a new transfer.
+ 
+ @note  Due to `NSTimer` APIs, this method is only available on systems greater than: iOS 10.0, tvOS 10.0, watchOS 3.0 and macOS 10.12. For earlier versions please use: `addTransferWithURL:saveFolderIdentifier:callbackURL:callback`;
+ 
+ @param URL                 The link (magnet, torrent, direct file URL etc.) to the transfer that is to be started.
+ @param parentIdentifier    The identifier of the folder in which the completed transfer is to be saved.
+ @param callbackURL         An optional URL to which transfer metadata will be posted once the transfer successfully completes.
+ @param errorCallback       The block that is called when there is an error starting the transfer. If there is an error in this callback, none of the other blocks will be called. Note: If there is an error later on in the transfer, it will be returned in the `completionCallback`.
+ @param progressCallback    The block that is called every second to give updates on the transfer progress. If the progress fails to be fetched, the underlying error will be returned, otherwise a `PIOTransfer` object will be returned describing the progress.
+ @param completionCallback  The block that is called at most once when the transfer completes. The status of the transfer will be included in the `PIOTransfer` object. If the transfer fails, the `error` parameter of the `PIOTransfer` object will be set.
+ 
+ @return    The request's `NSURLSessionDataTask` to be resumed.
+ */
++ (NSURLSessionDataTask *)addTransferWithURL:(NSURL *)URL
+                        saveFolderIdentifier:(NSInteger)parentIdentifier
+                                 callbackURL:(NSURL * _Nullable)callbackURL
+                               errorCallback:(PIOErrorOnlyCallback)errorCallback
+                            progressCallback:(void (^ _Nullable)(NSError * _Nullable, PIOTransfer * _Nullable))progressCallback
+                          completionCallback:(void (^ _Nullable)(PIOTransfer *))completionCallback NS_SWIFT_NAME(addTransfer(url:saveFolder:callbackURL:error:progress:completion:)) API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0));
 
 /**
  Returns a transfer’s properties.

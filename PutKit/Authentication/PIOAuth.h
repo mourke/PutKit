@@ -54,6 +54,13 @@ NS_SWIFT_NAME(Auth)
 typedef void (^PIOAuthCallback)(NSError * _Nullable error, AFOAuthCredential * _Nullable credential);
 
 /**
+ The de-authentication result callback.
+ 
+ @param error       An `NSError` object if an error occurred, is `nil` if there is no error.
+ */
+typedef void (^PIOSignOutCallback)(NSError * _Nullable error);
+
+/**
  Shared singleton instance of the `PIOAuth` class. A separate instance is not necessary and is not to be created.
  */
 + (PIOAuth *)sharedInstance NS_SWIFT_NAME(shared());
@@ -87,16 +94,16 @@ typedef void (^PIOAuthCallback)(NSError * _Nullable error, AFOAuthCredential * _
  
  @return    The request's `NSURLSessionDataTask` to be resumed.
  */
-- (NSURLSessionDataTask *)getCredentialForCode:(NSString *)code callback:(PIOAuthCallback)callback NS_SWIFT_NAME(credential(for:callback:));
+- (NSURLSessionDataTask *)getCredentialForCode:(NSString *)code callback:(PIOAuthCallback _Nullable)callback NS_SWIFT_NAME(credential(for:callback:));
 
 /**
- Locally removes the user's access token.
+ Locally and remotely removes the user's access token.
  
- @note: This method makes no calls to the @b Put.io API. This is an on-device only sign out. In order to completely revoke the privleges for this app, the user must visit their settings page on the @b Put.io website.
+ @param callback    The block called when the request completes. If the request fails, the underlying error will be returned, otherwise, this parameter will be `nil`.
  
- @return   A boolean value indicating the success of the operation.
+ @return    The request's `NSURLSessionDataTask` to be resumed.
  */
-- (BOOL)signOut;
+- (NSURLSessionDataTask *)signOutAndRevokeAccessTokenWithCallback:(PIOSignOutCallback _Nullable)callback;
 
 /**
  Your "CLIENT ID" obtained from @b Put.io.

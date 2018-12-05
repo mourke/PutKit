@@ -53,7 +53,7 @@
                                                                        NSError * _Nullable error) {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *files = [NSMutableArray array];
         
@@ -84,7 +84,7 @@
                                       callback:(void (^)(NSError * _Nullable, NSArray<PIOFile *> * _Nonnull, NSURL * _Nullable))callback {
     NSURLSession *session = [NSURLSession sharedSession];
     
-    NSURLComponents *components = [NSURLComponents componentsWithString:[kPIOEndpointSearchFiles stringByAppendingFormat:@"/%@/page/%@", query, @(page).stringValue]];
+    NSURLComponents *components = [NSURLComponents componentsWithString:[kPIOEndpointSearchFiles stringByAppendingFormat:@"/%@/page/%@", [query stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]], @(page).stringValue]];
     
     components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
     
@@ -93,7 +93,7 @@
                                                                        NSError * _Nullable error) {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *files = [NSMutableArray array];
         
@@ -107,7 +107,9 @@
             }
         }
         
-        NSURL *nextPageURL = [NSURL URLWithString:[responseDictionary objectForKey:@"next"]];
+
+        NSString *nextPageString = [responseDictionary objectForKey:@"next"];
+        NSURL *nextPageURL = [nextPageString isKindOfClass:NSString.class] ? [NSURL URLWithString:nextPageString] : nil;
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             callback(error, files, nextPageURL);
@@ -135,7 +137,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id file = [PIOFile alloc];
         
@@ -169,7 +171,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id transfer = [PIOTransfer alloc];
         
@@ -190,12 +192,14 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointCreateFolder];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"name" value:folderName],
-                              [NSURLQueryItem queryItemWithName:@"parent_id" value:@(parentIdentifier).stringValue],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"name" : folderName,
+                                                                 @"parent_id" : @(parentIdentifier).stringValue}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -221,7 +225,7 @@
                                                                        NSError * _Nullable error) {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id file = [PIOFile alloc];
         
@@ -243,12 +247,13 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointDeleteFiles];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"file_ids"
-                                                          value:[fileIdentifiers componentsJoinedByString:@","]],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"file_ids" : [fileIdentifiers componentsJoinedByString:@","]}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -269,11 +274,13 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointRenameFile];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"file_id" value:@(fileIdentifier).stringValue],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"file_id" : @(fileIdentifier).stringValue}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -294,13 +301,14 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointMoveFile];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"file_ids"
-                                                          value:[fileIdentifiers componentsJoinedByString:@","]],
-                              [NSURLQueryItem queryItemWithName:@"parent_id" value:@(destinationIdentifier).stringValue],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token" value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"file_ids" : [fileIdentifiers componentsJoinedByString:@","],
+                                                                 @"parent_id" : @(destinationIdentifier).stringValue}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -353,7 +361,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id status = [PIOMP4Conversion alloc];
         
@@ -403,15 +411,15 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointShareFiles];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"file_ids"
-                                                          value:[fileIdentifiers componentsJoinedByString:@","]],
-                              [NSURLQueryItem queryItemWithName:@"friends"
-                                                          value:[friends componentsJoinedByString:@","]],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token"
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"file_ids" : [fileIdentifiers componentsJoinedByString:@","],
+                                                                 @"friends" : [friends componentsJoinedByString:@","]}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                        NSURLResponse * _Nullable response,
@@ -439,7 +447,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *shares = [NSMutableArray array];
         
@@ -473,7 +481,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *recipients = [NSMutableArray array];
         
@@ -500,12 +508,14 @@
     
     NSString *shareValue = [shareIdentifiers containsObject:@(-1)] ? @"everyone" : [shareIdentifiers componentsJoinedByString:@","];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"shares" value:shareValue],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token"
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"shares" : shareValue}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -533,7 +543,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *subtitles = [NSMutableArray array];
         
@@ -613,7 +623,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *events = [NSMutableArray array];
         

@@ -74,6 +74,9 @@ NS_SWIFT_NAME(File)
 /** The size of the file in bytes. */
 @property (nonatomic, readonly) NSUInteger size;
 
+/** A boolean value indicating whether or not the file is actually a folder. */
+@property (nonatomic, readonly, getter=isFolder) BOOL folder;
+
 @end
 
 NS_ASSUME_NONNULL_END

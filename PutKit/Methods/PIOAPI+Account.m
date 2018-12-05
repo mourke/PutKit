@@ -48,7 +48,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id account = [PIOAccount alloc];
         
@@ -79,7 +79,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id settings = [PIOAccountSettings alloc];
         
@@ -101,16 +101,19 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointAccountSettings];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"default_download_folder" value:@(newAccountSettings.defaultDownloadFolderIdentifier).stringValue],
-                              [NSURLQueryItem queryItemWithName:@"is_invisible"
-                                                          value:newAccountSettings.isInvisible ? @"true" : @"false"],
-                              [NSURLQueryItem queryItemWithName:@"subtitle_languages"
-                                                          value:[newAccountSettings.subtitleLanguageCodes componentsJoinedByString:@","]],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token"
+    NSString *defaultDownloadFolder = isnan(newAccountSettings.defaultDownloadFolderIdentifier) ? nil : @(newAccountSettings.defaultDownloadFolderIdentifier).stringValue;
+    NSString *isInvisible = [newAccountSettings isKindOfClass:[NSNull null].class] ? nil : newAccountSettings.isInvisible ? @"true" : @"false";
+    
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"default_download_folder" : defaultDownloadFolder,
+                                                                 @"is_invisible" : isInvisible,
+                                                                 @"subtitle_languages" : [newAccountSettings.subtitleLanguageCodes componentsJoinedByString:@","]}
+                                                       options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,

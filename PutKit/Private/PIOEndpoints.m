@@ -30,6 +30,7 @@
 
 NSString * const kPIOEndpointAuthenticate = PIO_ENDPOINT_BASE @"/oauth2/authenticate";
 NSString * const kPIOEndpointAccessToken = PIO_ENDPOINT_BASE @"/oauth2/access_token";
+NSString * const kPIOEndpointClients = PIO_ENDPOINT_BASE @"/oauth/clients";
 
 NSString * const kPIOEndpointFiles = PIO_ENDPOINT_BASE @"/files";
 NSString * const kPIOEndpointListFiles = PIO_ENDPOINT_BASE @"/files/list";

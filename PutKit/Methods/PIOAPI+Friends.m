@@ -47,7 +47,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *friends = [NSMutableArray array];
         
@@ -81,7 +81,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *friends = [NSMutableArray array];
         

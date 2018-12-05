@@ -81,4 +81,12 @@
     return nil;
 }
 
+- (BOOL)isFolder {
+    return [self.contentType isEqualToString:@"application/x-directory"];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> name = %@; contentType = %@; identifier = %zd; parentIdentifier = %zd; cyclicRedundancyCode = %@; dateOfCreation = %@; dateFirstAccessed = %@; iconURL = %@; screenshotURL = %@; isMP4Available = %@; isShared = %@; openSubtitlesHash = %@; size = %tu; isFolder = %@", [self class], self, self.name, self.contentType, self.identifier, self.parentIdentifier, self.cyclicRedundancyCode, self.dateOfCreation, self.dateFirstAccessed, self.iconURL, self.screenshotURL, self.isMP4Available ? @"YES" : @"NO", self.isShared ? @"YES" : @"NO", self.openSubtitlesHash, self.size, self.isFolder ? @"YES" : @"NO"];
+}
+
 @end

@@ -33,30 +33,90 @@ NS_ASSUME_NONNULL_BEGIN
 NS_SWIFT_NAME(AccountSettings)
 @interface PIOAccountSettings : NSObject
 
-/** The file identifier of the user's default download folder. `0` is the root folder. */
+/** The file identifier of the user's default download folder. `0` is the root folder. May be `NaN`. */
 @property (nonatomic, readonly) NSInteger defaultDownloadFolderIdentifier;
 
-/** A boolean value indicating whether the user is invisible to other users in searches or not. */
+/** A boolean value indicating whether the user is invisible to other users in searches or not. May be `[NSNull null]`. */
 @property (nonatomic, readonly, getter=isInvisible) BOOL invisible;
 
 /** The default `ISO639-2` language code that the user has selected. This is automatically selected as the first object of the  `subtitleLanguageCodes` array. */
-@property (strong, nonatomic, readonly) NSString *defaultSubtitleLanguageCode;
+@property (strong, nonatomic, readonly, nullable) NSString *defaultSubtitleLanguageCode;
 
 /** The array of `ISO639-2` language codes that the user has selected to be fetched for each transfer. */
-@property (strong, nonatomic, readonly) NSArray<NSString *> *subtitleLanguageCodes;
+@property (strong, nonatomic, readonly, nullable) NSArray<NSString *> *subtitleLanguageCodes;
+
+/**
+ Creates a new `PIOAccountSettings` object for posting to @b Put.io.
+ 
+ @param defaultDownloadFolderIdentifier The file identifier of the user's default download folder. `0` is the root folder.
+ @param subtitleLanguageCodes   An array of `ISO639-2` language codes to be fetched for each transfer. @b MAXIMUM of @b 2 languages. If there are more, an exception will be raised. Passing `nil` will not change the server-side value; passing an empty array will.
+ @param isInvisible             A boolean value indicating whether the user is invisible to other users in searches or not.
+ 
+ @return    A new `PIOAccountSettings` object.
+ */
+- (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier
+                                  subtitleLanguageCodes:(NSArray<NSString *> * _Nullable)subtitleLanguageCodes
+                                            isInvisible:(BOOL)isInvisible NS_DESIGNATED_INITIALIZER;
 
 /**
  Creates a new `PIOAccountSettings` object for posting to @b Put.io.
  
  @param defaultDownloadFolderIdentifier The file identifier of the user's default download folder. `0` is the root folder.
  @param isInvisible                     A boolean value indicating whether the user is invisible to other users in searches or not.
- @param subtitleLanguageCodes           An array of `ISO639-2` language codes to be fetched for each transfer. @b MAXIMUM of @b 2 languages. If there are more, an exception will be raised.
  
  @return    A new `PIOAccountSettings` object.
  */
 - (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier
-                                            isInvisible:(BOOL)isInvisible
-                                  subtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes;
+                                            isInvisible:(BOOL)isInvisible;
+
+/**
+ Creates a new `PIOAccountSettings` object for posting to @b Put.io.
+ 
+ @param defaultDownloadFolderIdentifier The file identifier of the user's default download folder. `0` is the root folder.
+ @param subtitleLanguageCodes           An array of `ISO639-2` language codes to be fetched for each transfer. @b MAXIMUM of @b 2 languages. If there are more, an exception will be raised. Passing `nil` will not change the server-side value; passing an empty array will.
+ 
+ @return    A new `PIOAccountSettings` object.
+ */
+- (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier
+                                  subtitleLanguageCodes:(NSArray<NSString *> * _Nullable)subtitleLanguageCodes;
+
+/**
+ Creates a new `PIOAccountSettings` object for posting to @b Put.io.
+ 
+ @param subtitleLanguageCodes           An array of `ISO639-2` language codes to be fetched for each transfer. @b MAXIMUM of @b 2 languages. If there are more, an exception will be raised. Passing `nil` will not change the server-side value; passing an empty array will.
+ @param isInvisible                     A boolean value indicating whether the user is invisible to other users in searches or not.
+ 
+ @return    A new `PIOAccountSettings` object.
+ */
+- (instancetype)initWithSubtitleLanguageCodes:(NSArray<NSString *> * _Nullable)subtitleLanguageCodes
+                                  isInvisible:(BOOL)isInvisible;
+
+/**
+ Creates a new `PIOAccountSettings` object for posting to @b Put.io.
+ 
+ @param defaultDownloadFolderIdentifier The file identifier of the user's default download folder. `0` is the root folder.
+ 
+ @return    A new `PIOAccountSettings` object.
+ */
+- (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier;
+
+/**
+ Creates a new `PIOAccountSettings` object for posting to @b Put.io.
+ 
+ @param subtitleLanguageCodes   An array of `ISO639-2` language codes to be fetched for each transfer. @b MAXIMUM of @b 2 languages. If there are more, an exception will be raised. Passing `nil` will not change the server-side value; passing an empty array will.
+ 
+ @return    A new `PIOAccountSettings` object.
+ */
+- (instancetype)initWithSubtitleLanguageCodes:(NSArray<NSString *> * _Nullable)subtitleLanguageCodes;
+
+/**
+ Creates a new `PIOAccountSettings` object for posting to @b Put.io.
+ 
+ @param isInvisible A boolean value indicating whether the user is invisible to other users in searches or not.
+ 
+ @return    A new `PIOAccountSettings` object.
+ */
+- (instancetype)initWithIsInvisible:(BOOL)isInvisible;
 
 @end
 

@@ -56,6 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param newAccountSettings  The account settings the user wishes to have.
  @param callback            The block that is called when the request completes. If the request completes successfully the block will be called with a `nil` error passed in, however, if the request fails, the error will be passed in.
+ 
+ @return    The request's `NSURLSessionDataTask` to be resumed.
  */
 + (NSURLSessionDataTask *)updateAccountSettings:(PIOAccountSettings *)newAccountSettings callback:(PIOErrorOnlyCallback _Nullable)callback NS_SWIFT_NAME(updateAccountSettings(new:callback:));
 

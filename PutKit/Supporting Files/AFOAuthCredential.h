@@ -51,6 +51,11 @@ NS_SWIFT_NAME(OAuthCredential)
 @property (readonly, nonatomic, copy) NSString *refreshToken;
 
 /**
+ The date on which the OAuth token was created.
+ */
+@property (readonly, nonatomic, copy) NSDate *dateOfCreation;
+
+/**
  A boolean value indicating whether the OAuth credentials have expired.
  */
 @property (readonly, nonatomic, assign, getter = isExpired) BOOL expired;

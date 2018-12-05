@@ -50,7 +50,6 @@
         _peersGiving = [[dictionary objectForKey:@"peers_sending_to_us"] integerValue];
         _percentageDownloaded = [[dictionary objectForKey:@"percent_done"] doubleValue];
         _parentIdentifier = [[dictionary objectForKey:@"save_parent_id"] integerValue];
-        _timeSeeding = [[dictionary objectForKey:@"seconds_seeding"] doubleValue];
         _size = [[dictionary objectForKey:@"size"] integerValue];
         _status = [dictionary objectForKey:@"status"];
         _statusMessage = [dictionary objectForKey:@"status_message"];
@@ -68,18 +67,17 @@
             !isnan(_peersGiving) &&
             !isnan(_percentageDownloaded) &&
             !isnan(_parentIdentifier) &&
-            !isnan(_timeSeeding) &&
             !isnan(_size) &&
             ![_status isEqualToString:PIOTransferStatusUnknown] &&
             _statusMessage != nil &&
             !isnan(_uploadSpeed) &&
             !isnan(_totalUploaded))
         {
-            _callbackURL = [NSURL URLWithString:[dictionary objectForKey:@"callback_url"]];
+            NSString *callbackString = [dictionary objectForKey:@"callback_url"];
+            if ([callbackString isKindOfClass:NSString.class]) _callbackURL = [NSURL URLWithString:callbackString];
+            
             NSString *errorMessage = [dictionary objectForKey:@"error_message"];
-            if (errorMessage != nil) {
-                _error = [NSError errorWithDomain:@"io.put.kit.error" code:-1 userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
-            }
+            if ([errorMessage isKindOfClass:NSString.class]) _error = [NSError errorWithDomain:@"io.put.kit.error" code:-1 userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
             
             id estimatedTimeRemaining = [dictionary objectForKey:@"estimated_time"];
             if (estimatedTimeRemaining != [NSNull null]) _estimatedTimeRemaining = [estimatedTimeRemaining doubleValue];
@@ -93,21 +91,27 @@
             id subscriptionIdentifier = [dictionary objectForKey:@"subscription_id"];
             if (subscriptionIdentifier != [NSNull null]) _subscriptionIdentifier = [subscriptionIdentifier integerValue];
             
-            id trackerMessage = [dictionary objectForKey:@"tracker_message"];
+            NSString *trackerMessage = [dictionary objectForKey:@"tracker_message"];
             if ([trackerMessage isKindOfClass:NSString.class]) _trackerMessage = trackerMessage;
             
             NSString *dateFinishedString = [dictionary objectForKey:@"finished_at"];
-            
-            if (dateFinishedString != nil) _dateFinished = [dateFormatter dateFromString:dateFinishedString];
+            if ([dateFinishedString isKindOfClass:NSString.class]) _dateFinished = [dateFormatter dateFromString:dateFinishedString];
             
             _willExtract = [[dictionary objectForKey:@"extract"] boolValue];
             _private = [[dictionary objectForKey:@"is_private"] boolValue];
+            
+            id timeSeeding = [dictionary objectForKey:@"seconds_seeding"];
+            if (timeSeeding != [NSNull null]) _timeSeeding = [timeSeeding doubleValue];
             
             return self;
         }
     }
     
     return nil;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> name = %@; fileIdentifier = %zd; parentIdentifier = %zd; identifier = %zd; source = %@; subscriptionIdentifier = %zd; callbackURL = %@; dateOfCreation = %@; dateFinished = %@; error = %@; isPrivate = %@; size = %tu; totalUploaded = %zd; totalDownloaded = %zd; percentageDownloaded = %lf; estimatedTimeRemaining = %lf; downloadSpeed = %lf; uploadSpeed = %lf; peers = %tu; peersLeaching = %tu; peersGiving = %tu; seedToPeerRatio = %f; status = %@; statusMessage = %@; willExtract = %@; isSeeding = %@; timeSeeding = %lf; trackerMessage = %@", [self class], self, self.name, self.fileIdentifier, self.parentIdentifier, self.identifier, self.source, self.subscriptionIdentifier, self.callbackURL, self.dateOfCreation, self.dateFinished, self.error, self.isPrivate ? @"YES" : @"NO", self.size, self.totalUploaded, self.totalDownloaded, self.percentageDownloaded, self.estimatedTimeRemaining, self.downloadSpeed, self.uploadSpeed, self.peers, self.peersLeaching, self.peersGiving, self.seedToPeerRatio, self.status, self.statusMessage, self.willExtract ? @"YES" : @"NO", self.isSeeding ? @"YES" : @"NO", self.timeSeeding, self.trackerMessage];
 }
 
 @end

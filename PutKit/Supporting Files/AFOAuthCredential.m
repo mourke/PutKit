@@ -39,6 +39,7 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
 @property (readwrite, nonatomic, copy) NSString *tokenType;
 @property (readwrite, nonatomic, copy) NSString *refreshToken;
 @property (readwrite, nonatomic, copy) NSDate *expiration;
+@property (readwrite, nonatomic, copy) NSDate *dateOfCreation;
 @end
 
 
@@ -62,6 +63,7 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
     
     self.accessToken = token;
     self.tokenType = type;
+    self.dateOfCreation = [NSDate date];
     
     return self;
 }
@@ -177,6 +179,7 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
     self.tokenType = [decoder decodeObjectForKey:NSStringFromSelector(@selector(tokenType))];
     self.refreshToken = [decoder decodeObjectForKey:NSStringFromSelector(@selector(refreshToken))];
     self.expiration = [decoder decodeObjectForKey:NSStringFromSelector(@selector(expiration))];
+    self.dateOfCreation = [decoder decodeObjectForKey:NSStringFromSelector(@selector(dateOfCreation))];
     
     return self;
 }
@@ -186,6 +189,7 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
     [encoder encodeObject:self.tokenType forKey:NSStringFromSelector(@selector(tokenType))];
     [encoder encodeObject:self.refreshToken forKey:NSStringFromSelector(@selector(refreshToken))];
     [encoder encodeObject:self.expiration forKey:NSStringFromSelector(@selector(expiration))];
+    [encoder encodeObject:self.dateOfCreation forKey:NSStringFromSelector(@selector(dateOfCreation))];
 }
 
 @end

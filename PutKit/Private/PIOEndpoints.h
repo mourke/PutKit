@@ -27,6 +27,7 @@
 
 extern NSString * const kPIOEndpointAuthenticate;
 extern NSString * const kPIOEndpointAccessToken;
+extern NSString * const kPIOEndpointClients;
 
 extern NSString * const kPIOEndpointFiles;
 extern NSString * const kPIOEndpointListFiles;

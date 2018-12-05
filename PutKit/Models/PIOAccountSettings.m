@@ -32,30 +32,9 @@
 
 @implementation PIOAccountSettings
 
-- (instancetype)initFromDictionary:(NSDictionary *)dictionary {
-    self = [super init];
-    
-    if (self) {
-        _subtitleLanguageCodes = [dictionary objectForKey:@"subtitle_languages"];
-        _defaultSubtitleLanguageCode = [dictionary objectForKey:@"default_subtitle_language"];
-        _defaultDownloadFolderIdentifier = [[dictionary objectForKey:@"default_download_folder"] integerValue];
-        
-        if (_subtitleLanguageCodes != nil &&
-            _defaultSubtitleLanguageCode != nil &&
-            !isnan(_defaultDownloadFolderIdentifier))
-        {
-            _invisible = [[dictionary objectForKey:@"is_invisible"] boolValue];
-            
-            return self;
-        }
-    }
-    
-    return nil;
-}
-
 - (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier
-                                            isInvisible:(BOOL)isInvisible
-                                  subtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes {
+                                  subtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes
+                                            isInvisible:(BOOL)isInvisible {
     NSParameterAssert(subtitleLanguageCodes.count <= 2);
     
     self = [super init];
@@ -67,6 +46,72 @@
     }
     
     return self;
+}
+
+- (instancetype)init {
+    return [self initWithDefaultDownloadFolderIdentifier:NAN
+                                   subtitleLanguageCodes:nil
+                                             isInvisible:[NSNull null]];
+}
+
+- (instancetype)initFromDictionary:(NSDictionary *)dictionary {
+    NSArray *subtitleLanguageCodes = [dictionary objectForKey:@"subtitle_languages"];
+    NSInteger defaultDownloadFolderIdentifier = [[dictionary objectForKey:@"default_download_folder"] integerValue];
+    id invisible = [dictionary objectForKey:@"is_invisible"];
+    
+    if (subtitleLanguageCodes != nil &&
+        !isnan(defaultDownloadFolderIdentifier) &&
+        ![invisible isKindOfClass:NSNull.class])
+    {
+        return [self initWithDefaultDownloadFolderIdentifier:defaultDownloadFolderIdentifier
+                                       subtitleLanguageCodes:subtitleLanguageCodes
+                                                 isInvisible:[invisible boolValue]];
+    }
+    
+    return nil;
+}
+
+- (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier
+                                  subtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes {
+    return [self initWithDefaultDownloadFolderIdentifier:defaultDownloadFolderIdentifier
+                                   subtitleLanguageCodes:subtitleLanguageCodes
+                                             isInvisible:[NSNull null]];
+}
+
+- (instancetype)initWithIsInvisible:(BOOL)isInvisible {
+    return [self initWithDefaultDownloadFolderIdentifier:NAN
+                                   subtitleLanguageCodes:nil
+                                             isInvisible:isInvisible];
+}
+
+- (instancetype)initWithSubtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes {
+    return [self initWithDefaultDownloadFolderIdentifier:NAN
+                                   subtitleLanguageCodes:subtitleLanguageCodes
+                                             isInvisible:[NSNull null]];
+}
+
+- (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier {
+    return [self initWithDefaultDownloadFolderIdentifier:defaultDownloadFolderIdentifier
+                                   subtitleLanguageCodes:nil
+                                             isInvisible:[NSNull null]];
+}
+
+- (instancetype)initWithSubtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes
+                                  isInvisible:(BOOL)isInvisible {
+    return [self initWithDefaultDownloadFolderIdentifier:NAN
+                                   subtitleLanguageCodes:subtitleLanguageCodes
+                                             isInvisible:isInvisible];
+}
+
+- (instancetype)initWithDefaultDownloadFolderIdentifier:(NSInteger)defaultDownloadFolderIdentifier
+                                            isInvisible:(BOOL)isInvisible {
+    return [self initWithDefaultDownloadFolderIdentifier:defaultDownloadFolderIdentifier
+                                   subtitleLanguageCodes:nil
+                                             isInvisible:isInvisible];
+}
+
+- (NSString *)defaultSubtitleLanguageCode {
+    return [_subtitleLanguageCodes firstObject];
 }
 
 @end

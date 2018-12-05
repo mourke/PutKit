@@ -26,6 +26,7 @@
 #import "PIOError.h"
 
 BOOL pk_response_validate(NSData *responseData, NSError * *error) {
+    if (responseData == nil) return NO;
     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:error];
     
     NSString *errorMessage = [responseDictionary objectForKey:@"error_message"];

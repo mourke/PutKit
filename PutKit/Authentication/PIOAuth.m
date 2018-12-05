@@ -53,6 +53,16 @@ NSString * const kPIOOAuthCredentialIdentifier = @"PutKitCredential";
         [_listeners addObject:listener];
     }
 }
+    
+- (instancetype)init {
+    self = [super init];
+    
+    if (self) {
+        _listeners = [NSHashTable weakObjectsHashTable];
+    }
+    
+    return self;
+}
 
 - (void)removeListener:(id<PIOAuthenticatorDelegate>)listener {
     [_listeners removeObject:listener];
@@ -97,15 +107,16 @@ NSString * const kPIOOAuthCredentialIdentifier = @"PutKitCredential";
 - (NSURLSessionDataTask *)getCredentialForCode:(NSString *)code callback:(PIOAuthCallback)callback {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         for (id<PIOAuthenticatorDelegate> delegate in [[self listeners] allObjects]) {
-            [delegate authenticationDidStart];
+            if ([delegate respondsToSelector:@selector(authenticationDidStart)]) [delegate authenticationDidStart];
         }
     }];
     
     NSURLSession *session = [NSURLSession sharedSession];
     
-    NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointAuthenticate];
+    NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointAccessToken];
     
     components.queryItems = @[[NSURLQueryItem queryItemWithName:@"client_id" value:_clientID],
+                              [NSURLQueryItem queryItemWithName:@"client_secret" value:_APISecret],
                               [NSURLQueryItem queryItemWithName:@"grant_type" value:@"authorization_code"],
                               [NSURLQueryItem queryItemWithName:@"code" value:code],
                               [NSURLQueryItem queryItemWithName:@"redirect_uri" value:_redirectURI.absoluteString]];
@@ -120,15 +131,71 @@ NSString * const kPIOOAuthCredentialIdentifier = @"PutKitCredential";
         NSString *token = responseDictionary[@"access_token"];
     
         if (token != nil) {
-            [[AFOAuthCredential credentialWithOAuthToken:token tokenType:@"Bearer"] storeWithIdentifier:kPIOOAuthCredentialIdentifier];
+            [[AFOAuthCredential credentialWithOAuthToken:token tokenType:@"token"] storeWithIdentifier:kPIOOAuthCredentialIdentifier];
         }
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error, [self credential]);
-            for (id<PIOAuthenticatorDelegate> delegate in [_listeners allObjects]) {
-                [delegate authenticationDidFinishWithError:error];
+            if(callback != nil) callback(error, [self credential]);
+            for (id<PIOAuthenticatorDelegate> delegate in [self.listeners allObjects]) {
+                if ([delegate respondsToSelector:@selector(authenticationDidFinishWithError:)]) [delegate authenticationDidFinishWithError: error];
             }
         }];
+    }];
+}
+
+- (NSURLSessionDataTask *)signOutAndRevokeAccessTokenWithCallback:(PIOSignOutCallback)callback {
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kPIOEndpointClients]];
+    
+    [request setValue:[NSString stringWithFormat:@"%@ %@", self.credential.tokenType, self.credential.accessToken] forHTTPHeaderField:@"authorization"];
+    
+    return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+        if (error == nil && pk_response_validate(data, &error)) {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            
+            __block NSNumber *clientID;
+            [responseDictionary[@"clients"] enumerateObjectsUsingBlock:^(NSDictionary *app,
+                                                                      NSUInteger index,
+                                                                      BOOL *stop) {
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                [formatter setDateFormat:@"YYYY-MM-DD'T'HH:mm:ss"];
+                NSDate *dateOfCreation = [formatter dateFromString:app[@"created_at"]];
+                NSInteger appID = [app[@"app_id"] integerValue];
+                
+                BOOL dateIsAroundTheSame = [dateOfCreation timeIntervalSinceDate:self.credential.dateOfCreation] < 60; // There is no system on the Put.io api to help us determine which client we are so we can get which one it is most likely to be by comparing the date on which the authentication occurred. The tolerance here is for any server lag between Sonix and Put.io.
+                
+                if (appID == 3257 && dateIsAroundTheSame) {
+                    *stop = YES;
+                    clientID = [NSNumber numberWithInteger:[app[@"id"] integerValue]];
+                }
+            }];
+            
+            if (clientID == nil) {
+                NSLog(@"Authentication token not found; User has already signed out or was never authenticated in the first place!");
+                [self signOut];
+                if (callback != nil) callback(nil);
+                return;
+            }
+            
+            [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/delete", kPIOEndpointClients, clientID.stringValue]]];
+            
+            [request setHTTPMethod:@"POST"];
+            
+            [[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
+                                                                      NSURLResponse * _Nullable response,
+                                                                      NSError * _Nullable error) {
+                if (error == nil) {
+                    pk_response_validate(data, &error);
+                }
+                [self signOut];
+                if (callback != nil) callback(error);
+            }] resume];
+        } else {
+            if (callback != nil) callback(error);
+        }
     }];
 }
 

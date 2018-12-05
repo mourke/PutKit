@@ -47,7 +47,7 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         NSMutableArray *transfers = [NSMutableArray array];
         
@@ -75,34 +75,64 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointAddTransfer];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"url" value:URL.absoluteString],
-                              [NSURLQueryItem queryItemWithName:@"save_parent_id" value:@(parentIdentifier).stringValue],
-                              [NSURLQueryItem queryItemWithName:@"callback_url" value:callbackURL.absoluteString],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token"
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    
+    NSMutableDictionary *body = [NSMutableDictionary dictionaryWithDictionary:@{@"url" : URL.absoluteString, @"save_parent_id" : @(parentIdentifier).stringValue}];
+    
+    if (callbackURL != nil) [body setObject:@"callback_url" forKey:callbackURL.absoluteString];
+    
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:body options:NSJSONWritingPrettyPrinted error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
-                                                                       NSURLResponse * _Nullable response,
-                                                                       NSError * _Nullable error)
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error)
     {
         pk_response_validate(data, &error);
-        
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        
+                
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
+                
         id transfer = [PIOTransfer alloc];
-        
+                
         if ([transfer conformsToProtocol:@protocol(PIOObjectProtocol)]) {
-            transfer = [transfer initFromDictionary:responseDictionary];
+            transfer = [transfer initFromDictionary:responseDictionary[@"transfer"]];
         } else {
             transfer = nil;
         }
-        
-        
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             callback(error, transfer);
+        }];
+    }];
+}
+
++ (NSURLSessionDataTask *)addTransferWithURL:(NSURL *)URL
+                        saveFolderIdentifier:(NSInteger)parentIdentifier
+                                 callbackURL:(NSURL *)callbackURL
+                               errorCallback:(PIOErrorOnlyCallback)errorCallback
+                            progressCallback:(void (^)(NSError * _Nullable, PIOTransfer * _Nullable))progressCallback
+                          completionCallback:(void (^)(PIOTransfer * _Nonnull))completionCallback {
+    return [self addTransferWithURL:URL
+               saveFolderIdentifier:parentIdentifier
+                        callbackURL:callbackURL
+                           callback:^(NSError *error, PIOTransfer *transfer)
+    {
+        if (transfer == nil) return errorCallback(error);
+        
+        [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+            [[PIOAPI getTransferForID:((PIOTransfer *)transfer).identifier
+                             callback:^(NSError *error, PIOTransfer *transfer)
+            {
+                if ([transfer.status isEqualToString:PIOTransferStatusCompleted]) {
+                    [timer invalidate];
+                    completionCallback(transfer);
+                } else {
+                    progressCallback(error, transfer);
+                }
+            }] resume];
         }];
     }];
 }
@@ -121,12 +151,12 @@
     {
         pk_response_validate(data, &error);
         
-        NSDictionary *responseDictionary = error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
         
         id transfer = [PIOTransfer alloc];
         
         if ([transfer conformsToProtocol:@protocol(PIOObjectProtocol)]) {
-            transfer = [transfer initFromDictionary:responseDictionary];
+            transfer = [transfer initFromDictionary:responseDictionary[@"transfer"]];
         } else {
             transfer = nil;
         }
@@ -143,12 +173,15 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointRetryTransfer];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"id" value:@(transferIdentifier).stringValue],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token"
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"id" : @(transferIdentifier).stringValue}
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -167,13 +200,15 @@
     
     NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointCancelTransfer];
     
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"transfer_ids"
-                                                          value:[transferIdentifiers componentsJoinedByString:@","]],
-                              [NSURLQueryItem queryItemWithName:@"oauth_token"
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:components.URL];
     [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:@{@"transfer_ids" : [transferIdentifiers componentsJoinedByString:@","]}
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
     
     return [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
@@ -190,7 +225,7 @@
 + (NSURLSessionDataTask *)cleanCompletedTransfersWithCallback:(PIOErrorOnlyCallback)callback {
     NSURLSession *session = [NSURLSession sharedSession];
     
-    NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointAddTransfer];
+    NSURLComponents *components = [NSURLComponents componentsWithString:kPIOEndpointCleanTransfers];
     
     components.queryItems = @[[NSURLQueryItem queryItemWithName:@"oauth_token"
                                                           value:[PIOAuth sharedInstance].credential.accessToken]];

@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  Lists all the files in a specified folder.
  
  @param folderIdentifier    The ID of the folder whose contents is to be listed. The root directory has an identifier of @b 0.
- @param callback            The block that is called when the request completes. If the request completes successfully, the contents of the folder and the folder will be returned as an array of `PIOFile` objects and a `PIOFile` object. However, if it fails, the underlying error will be returned.
+ @param callback            The block that is called when the request completes. If the request completes successfully, the folder and its contents will be returned as an array of `PIOFile` objects and a `PIOFile` object. However, if it fails, the underlying error will be returned.
  
  @return    The request's `NSURLSessionDataTask` to be resumed.
  */
@@ -266,7 +266,7 @@ NS_ASSUME_NONNULL_BEGIN
  Returns the HTTP Live Streaming (HLS) `.m3u8` `NSURL` which can be directly passed into `AVPlayer` and played.
  
  @param fileIdentifier      The identifier of the video for which a HTTP Live Stream is to be created.
- @param subtitleIdentifier  The identifier of the subtitle, if any, to be embedded in the HTTP Live Stream.
+ @param subtitleIdentifier  The identifier of the subtitle, if any, to be embedded in the HTTP Live Stream. For all subtitles, pass "all".
  
  @return    The `NSURL` pointing to the `.m3u8` stream.
  */

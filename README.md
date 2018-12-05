@@ -58,9 +58,9 @@ The API information must be set every time the application starts. If you do not
 
 #### Objective-C:
 ```objective-c
-[[PKAuth sharedInstance] setAPISecret:@"YOUR_APPLICATION_SECRET"];
-[[PKAuth sharedInstance] setClientID:@"YOUR_CLIENT_ID"];
-[[PKAuth sharedInstance] setRedirectURI:@"YOUR_CALLBACK_URL"];
+[[PIOAuth sharedInstance] setAPISecret:@"YOUR_APPLICATION_SECRET"];
+[[PIOAuth sharedInstance] setClientID:@"YOUR_CLIENT_ID"];
+[[PIOAuth sharedInstance] setRedirectURI:@"YOUR_CALLBACK_URL"];
 ```
 
 #### Swift:
