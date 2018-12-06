@@ -26,6 +26,9 @@
 #import "PIOAccountSettings.h"
 #import "PIOObjectProtocol.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types" // when using the BOOL value `isInvisible`, it being `NSNull` triggers different behavior. This is done because you cannot pass nil to a non object type in objective-c.
+
 @interface PIOAccountSettings() <PIOObjectProtocol>
 
 @end
@@ -75,7 +78,7 @@
                                   subtitleLanguageCodes:(NSArray<NSString *> *)subtitleLanguageCodes {
     return [self initWithDefaultDownloadFolderIdentifier:defaultDownloadFolderIdentifier
                                    subtitleLanguageCodes:subtitleLanguageCodes
-                                             isInvisible:[NSNull null]];
+                                             isInvisible:NULL];
 }
 
 - (instancetype)initWithIsInvisible:(BOOL)isInvisible {
@@ -115,3 +118,5 @@
 }
 
 @end
+
+#pragma clang diagnostic pop

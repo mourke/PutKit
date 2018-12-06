@@ -46,4 +46,8 @@
     return nil;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> userName = %@; userAvatarURL = %@; identifier = %zd", [self class], self, self.userName, self.userAvatarURL, self.identifier];
+}
+
 @end

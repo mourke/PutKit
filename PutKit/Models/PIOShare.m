@@ -48,4 +48,8 @@
     return nil;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> fileIdentifier = %zd; fileName = %@; numberOfPeopleSharedWith = %zd", [self class], self, self.fileIdentifier, self.fileName, self.numberOfPeopleSharedWith];
+}
+
 @end

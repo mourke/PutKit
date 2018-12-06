@@ -44,4 +44,8 @@
     return nil;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> username = %@", [self class], self, self.username];
+}
+
 @end

@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4DAEECC920431C6A00F62548"
+               BuildableName = "PutKit iOS Tests.xctest"
+               BlueprintName = "PutKit iOS Tests"
+               ReferencedContainer = "container:PutKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4D20554720385E9A00AE832F"
+            BuildableName = "PutKit.framework"
+            BlueprintName = "PutKit iOS"
+            ReferencedContainer = "container:PutKit.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

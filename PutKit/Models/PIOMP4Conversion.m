@@ -39,7 +39,7 @@
     if (self) {
         _status = [dictionary objectForKey:@"status"];
         _percentageCompleted = [[dictionary objectForKey:@"percent_done"] integerValue];
-        _size = [[dictionary objectForKey:@"size"] integerValue];
+        _size = [[dictionary objectForKey:@"size"] unsignedIntegerValue];
         
         if (_status != nil) {
             return self;
@@ -47,6 +47,10 @@
     }
     
     return nil;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> status = %@; percentageCompleted = %zd; size = %tu", [self class], self, self.status, self.percentageCompleted, self.size];
 }
 
 @end

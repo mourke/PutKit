@@ -50,7 +50,7 @@ NS_SWIFT_NAME(Event)
 @property (nonatomic, readonly) NSInteger fileIdentifier;
 
 /** The size of the file in bytes. */
-@property (nonatomic, readonly) NSInteger size;
+@property (nonatomic, readonly) NSUInteger size;
 
 @end
 

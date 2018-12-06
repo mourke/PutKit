@@ -1,7 +1,7 @@
 # PutKit
 Objective-C wrapper for Put.io API
 
-![Travis](https://travis-ci.org/mourke/PutKit.svg?branch=master)
+[![Travis](https://travis-ci.org/mourke/PutKit.svg?branch=master)](https://travis-ci.org/mourke/PutKit)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](#installation-with-carthage) [![CocoaPods compatible](https://img.shields.io/cocoapods/v/PutKit.svg)](#installation-with-cocoapods) ![Swift 4.0.x](https://img.shields.io/badge/Swift-4.0.x-orange.svg) ![Platforms](https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-lightgrey.svg) [![License](https://img.shields.io/badge/license-MIT-414141.svg)](https://github.com/mourke/PutKit/blob/master/LICENSE)
 
 ## Installation with CocoaPods
@@ -21,7 +21,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
 target 'TargetName' do
-pod 'PutKit', '~> 1.0'
+pod 'PutKit', '~> 1.1'
 end
 ```
 
@@ -45,7 +45,7 @@ $ brew install carthage
 To integrate PutKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "mourke/PutKit"  ~> 1.0
+github "mourke/PutKit"  ~> 1.1
 ```
 
 Run `carthage` to build the framework and drag the built `PutKit.framework` into your Xcode project.

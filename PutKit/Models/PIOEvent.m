@@ -45,7 +45,7 @@
             _size = [[dictionary objectForKey:@"file_size"] integerValue];
         } else {
             _name = [dictionary objectForKey:@"transfer_name"];
-            _size = [[dictionary objectForKey:@"transfer_size"] integerValue];
+            _size = [[dictionary objectForKey:@"transfer_size"] unsignedIntegerValue];
         }
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -65,6 +65,10 @@
     }
     
     return nil;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> type = %@; name = %@; dateOfCreation = %@; sharingUsername = %@; fileIdentifier = %zd; size = %tu", [self class], self, self.type, self.name, self.dateOfCreation, self.sharingUsername, self.fileIdentifier, self.size];
 }
 
 @end

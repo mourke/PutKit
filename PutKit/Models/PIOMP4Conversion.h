@@ -41,7 +41,7 @@ NS_SWIFT_NAME(Mp4Conversion)
 @property (nonatomic, readonly) NSInteger percentageCompleted;
 
 /** The size of the completed **.mp4** file. Will be `NaN` if `status` is anything other than `PIOMP4StatusCompleted`. */
-@property (nonatomic, readonly) NSInteger size;
+@property (nonatomic, readonly) NSUInteger size;
 
 @end
 

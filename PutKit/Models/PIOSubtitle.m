@@ -54,4 +54,8 @@
     return nil;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> name = %@; key = %@; language = %@; source = %@", [self class], self, self.name, self.key, self.language, self.source];
+}
+
 @end

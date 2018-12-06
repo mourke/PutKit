@@ -71,4 +71,8 @@
     return nil;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p> username = %@; emailAddress = %@; planExpiryDate = %@; defaultSubtitleLanguageCode = %@; subtitleLanguageCodes = %@; diskSpaceAvailable = %zd; diskSpaceUsed = %zd; totalDiskSize = %zd", [self class], self, self.username, self.emailAddress, self.planExpiryDate, self.defaultSubtitleLanguageCode, self.subtitleLanguageCodes, self.diskSpaceAvailable, self.diskSpaceUsed, self.totalDiskSize];
+}
+
 @end
