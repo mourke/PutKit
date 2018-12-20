@@ -121,19 +121,18 @@
                              toFolderWithID:(NSInteger)parentIdentifier
                                 newFileName:(NSString * _Nullable)fileName
                                    callback:(void (^)(NSError * _Nullable, PIOFile * _Nullable))callback {
-    NSAssert(![[fileURL pathExtension] isEqualToString:@".torrent"], @"Please use `uploadTorrentFileAtURL:toFolderWithID:newFileName:callback:` instead.");
+    NSAssert(![[fileURL pathExtension] isEqualToString:@"torrent"], @"Please use `uploadTorrentFileAtURL:toFolderWithID:newFileName:callback:` instead.");
     
     if (fileName == nil) fileName = [fileURL lastPathComponent];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kPIOEndpointUploadFiles]];
-    [request setHTTPMethod:@"POST"];
+    NSData *data = [NSData dataWithContentsOfFile:fileURL.path];
+    NSString *contentType = @"application/octet-stream";
     
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    return [session uploadTaskWithRequest:request fromFile:fileURL
-                        completionHandler:^(NSData * _Nullable data,
-                                            NSURLResponse * _Nullable response,
-                                            NSError * _Nullable error)
+    return [self uploadData:data
+                     ofType:contentType
+             toFolderWithID:parentIdentifier
+                newFileName:fileName
+                   callback:^(NSData * _Nullable data,  NSURLResponse * _Nullable response, NSError * _Nullable error)
     {
         pk_response_validate(data, &error);
         
@@ -155,26 +154,25 @@
                                     toFolderWithID:(NSInteger)parentIdentifier
                                        newFileName:(NSString * _Nullable)fileName
                                           callback:(void (^)(NSError * _Nullable, PIOTransfer * _Nullable))callback {
-    NSAssert([[torrentURL pathExtension] isEqualToString:@".torrent"], @"Please use `uploadFileAtURL:toFolderWithID:newFileName:callback:` instead.");
+    NSAssert([[torrentURL pathExtension] isEqualToString:@"torrent"], @"Please use `uploadFileAtURL:toFolderWithID:newFileName:callback:` instead.");
     
     if (fileName == nil) fileName = [torrentURL lastPathComponent];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kPIOEndpointUploadFiles]];
-    [request setHTTPMethod:@"POST"];
+    NSData *data = [NSData dataWithContentsOfFile:torrentURL.path];
+    NSString *contentType = @"application/x-bittorrent";
     
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    return [session uploadTaskWithRequest:request fromFile:torrentURL
-                        completionHandler:^(NSData * _Nullable data,
-                                            NSURLResponse * _Nullable response,
-                                            NSError * _Nullable error)
+    return [self uploadData:data
+                     ofType:contentType
+             toFolderWithID:parentIdentifier
+                newFileName:fileName
+                   callback:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
     {
         pk_response_validate(data, &error);
-        
+                
         NSDictionary *responseDictionary = data ? error ? nil : [NSJSONSerialization JSONObjectWithData:data options:0 error:&error] : nil;
-        
+                
         id transfer = [PIOTransfer alloc];
-        
+                
         if ([transfer conformsToProtocol:@protocol(PIOObjectProtocol)]) {
             transfer = [transfer initFromDictionary:[responseDictionary objectForKey:@"transfer"]];
         }
@@ -183,6 +181,43 @@
             callback(error, transfer);
         }];
     }];
+}
+
++ (NSURLSessionUploadTask *)uploadData:(NSData *)data
+                                ofType:(NSString *)dataType
+                        toFolderWithID:(NSInteger)parentIdentifier
+                           newFileName:(NSString *)fileName
+                              callback:(void (^)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error))callback {
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kPIOEndpointUploadFiles]];
+    AFOAuthCredential *credential = [PIOAuth sharedInstance].credential;
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[NSString stringWithFormat:@"%@ %@", credential.tokenType, credential.accessToken] forHTTPHeaderField:@"authorization"];
+    
+    NSString *boundary = [NSString stringWithFormat:@"----%@", [NSUUID UUID].UUIDString];
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    
+    NSMutableData *body = [NSMutableData data];
+    
+    [body appendData:[[NSString stringWithFormat:@"--%@\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@\"\n", fileName] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Type: %@\n\n", dataType] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:data];
+    
+    [body appendData:[[NSString stringWithFormat:@"\n\n--%@\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"filename\"\n\n%@\n", fileName] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [body appendData:[[NSString stringWithFormat:@"--%@\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"parent_id\"\n\n%zd", parentIdentifier] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [body appendData:[[NSString stringWithFormat:@"\n--%@--", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSInputStream *stream = [[NSInputStream alloc] initWithData:body];
+    [request setHTTPBodyStream:stream];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    return (NSURLSessionUploadTask *)[session dataTaskWithRequest:request completionHandler:callback];
 }
 
 + (NSURLSessionDataTask *)createFolderNamed:(NSString *)folderName

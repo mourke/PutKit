@@ -34,7 +34,7 @@ NS_SWIFT_NAME(AccountSettings)
 @interface PIOAccountSettings : NSObject
 
 /** The file identifier of the user's default download folder. `0` is the root folder. May be `NaN`. */
-@property (nonatomic, readonly) NSInteger defaultDownloadFolderIdentifier;
+@property (nonatomic, readonly) NSInteger defaultDownloadFolderIdentifier NS_SWIFT_NAME(defaultDownloadFolderId);
 
 /** A boolean value indicating whether the user is invisible to other users in searches or not. May be `[NSNull null]`. */
 @property (nonatomic, readonly, getter=isInvisible) BOOL invisible;

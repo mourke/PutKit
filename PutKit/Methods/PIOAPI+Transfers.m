@@ -109,30 +109,25 @@
     }];
 }
 
-+ (NSURLSessionDataTask *)addTransferWithURL:(NSURL *)URL
-                        saveFolderIdentifier:(NSInteger)parentIdentifier
-                                 callbackURL:(NSURL *)callbackURL
-                               errorCallback:(PIOErrorOnlyCallback)errorCallback
-                            progressCallback:(void (^)(NSError * _Nullable, PIOTransfer * _Nullable))progressCallback
-                          completionCallback:(void (^)(PIOTransfer * _Nonnull))completionCallback {
-    return [self addTransferWithURL:URL
-               saveFolderIdentifier:parentIdentifier
-                        callbackURL:callbackURL
-                           callback:^(NSError *error, PIOTransfer *transfer)
-    {
++ (NSURLSessionDataTask *)getTransferForID:(NSInteger)transferIdentifier
+                             errorCallback:(PIOErrorOnlyCallback)errorCallback
+                          progressCallback:(void (^)(NSError * _Nullable, PIOTransfer * _Nullable))progressCallback
+                        completionCallback:(void (^)(PIOTransfer * _Nonnull))completionCallback {
+    return [self getTransferForID:transferIdentifier callback:^(NSError * _Nullable error,
+                                                                PIOTransfer * _Nullable transfer) {
         if (transfer == nil) return errorCallback(error);
         
         [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
             [[PIOAPI getTransferForID:((PIOTransfer *)transfer).identifier
                              callback:^(NSError *error, PIOTransfer *transfer)
-            {
-                if ([transfer.status isEqualToString:PIOTransferStatusCompleted]) {
-                    [timer invalidate];
-                    completionCallback(transfer);
-                } else {
-                    progressCallback(error, transfer);
-                }
-            }] resume];
+              {
+                  if ([transfer.status isEqualToString:PIOTransferStatusCompleted]) {
+                      [timer invalidate];
+                      if (completionCallback != nil) completionCallback(transfer);
+                  } else {
+                      if (progressCallback != nil) progressCallback(error, transfer);
+                  }
+              }] resume];
         }];
     }];
 }

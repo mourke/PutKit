@@ -47,7 +47,7 @@ NS_SWIFT_NAME(Event)
 @property (strong, nonatomic, nullable, readonly) NSString *sharingUsername;
 
 /** The unique identifier for the file that is associated with the current event. */
-@property (nonatomic, readonly) NSInteger fileIdentifier;
+@property (nonatomic, readonly) NSInteger fileIdentifier NS_SWIFT_NAME(fileId);
 
 /** The size of the file in bytes. */
 @property (nonatomic, readonly) NSUInteger size;

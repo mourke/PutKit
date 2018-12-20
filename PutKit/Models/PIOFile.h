@@ -42,10 +42,10 @@ NS_SWIFT_NAME(File)
 @property (strong, nonatomic, readonly) NSString *contentType;
 
 /** The unique identifier for the file. */
-@property (nonatomic, readonly) NSInteger identifier;
+@property (nonatomic, readonly) NSInteger identifier NS_SWIFT_NAME(id);
 
 /** The unique identifier for the folder in which the current file resides. 0 indicates the root directory. */
-@property (nonatomic, readonly) NSInteger parentIdentifier;
+@property (nonatomic, readonly) NSInteger parentIdentifier NS_SWIFT_NAME(parentId);
 
 /** The CRC32 checksum for the file, used to verify data integrity. */
 @property (strong, nonatomic, nullable, readonly) NSString *cyclicRedundancyCode;

@@ -38,19 +38,19 @@ NS_SWIFT_NAME(Transfer)
 @property (strong, nonatomic, readonly) NSString *name;
 
 /** The unique identifier of the file being transferred. */
-@property (nonatomic, readonly) NSInteger fileIdentifier;
+@property (nonatomic, readonly) NSInteger fileIdentifier NS_SWIFT_NAME(fileId);
 
 /** The unique identifier for the folder in which the current file resides. 0 indicates the root directory. */
-@property (nonatomic, readonly) NSInteger parentIdentifier;
+@property (nonatomic, readonly) NSInteger parentIdentifier NS_SWIFT_NAME(parentId);
 
 /** The unique transfer id assigned by @b Put.io. */
-@property (nonatomic, readonly) NSInteger identifier;
+@property (nonatomic, readonly) NSInteger identifier NS_SWIFT_NAME(id);
 
 /** The source link (magnet or otherwise) of the file being transferred. */
 @property (strong, nonatomic, nullable, readonly) NSString *source;
 
 /** The identifier of the subsription by which the file download was instigated. May be NaN. */
-@property (nonatomic, readonly) NSInteger subscriptionIdentifier;
+@property (nonatomic, readonly) NSInteger subscriptionIdentifier NS_SWIFT_NAME(subscriptionId);
 
 /** The URL to which the transfer’s metadata is **POST**ed when the download has finished. */
 @property (strong, nonatomic, nullable, readonly) NSURL *callbackURL NS_SWIFT_NAME(callbackUrl);

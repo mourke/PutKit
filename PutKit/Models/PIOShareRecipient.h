@@ -37,6 +37,6 @@
 @property (strong, nonatomic, readonly) NSURL *userAvatarURL NS_SWIFT_NAME(userAvatar);
 
 /** The unique identifier for the share. */
-@property (nonatomic, readonly) NSInteger identifier;
+@property (nonatomic, readonly) NSInteger identifier NS_SWIFT_NAME(id);
 
 @end

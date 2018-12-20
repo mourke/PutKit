@@ -67,26 +67,6 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testTransfer {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Start transfer"];
-    
-    [[PIOAPI addTransferWithURL:[NSURL URLWithString:@"magnet:?xt=urn:btih:03BB57EA1F7E8DC9CC7DA349B549D7A7C5BC3359&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.opentrackr.org:1337/announce&amp;tr=udp://torrent.gresille.org:80/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://tracker.leechers-paradise.org:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337"]
-           saveFolderIdentifier:0
-                    callbackURL:nil
-                  errorCallback:^(NSError * _Nullable error) {
-                      XCTAssertNil(error, @"Failed to start transfer %@", error);
-                      [expectation fulfill];
-                  } progressCallback:^(NSError * _Nullable error, PIOTransfer * _Nullable transfer) {
-                      NSLog(@"%@", transfer);
-                  } completionCallback:^(PIOTransfer *transfer) {
-                      NSLog(@"%@", transfer);
-                      [expectation fulfill];
-                  }] resume];
-    
-    
-    [self waitForExpectationsWithTimeout:1000 handler:nil];
-}
-
 - (void)testHLS {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Get HSL link from file id"];
     
