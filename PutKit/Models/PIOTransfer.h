@@ -49,7 +49,7 @@ NS_SWIFT_NAME(Transfer)
 /** The source link (magnet or otherwise) of the file being transferred. */
 @property (strong, nonatomic, nullable, readonly) NSString *source;
 
-/** The identifier of the subsription by which the file download was instigated. May be NaN. */
+/** The identifier of the subscription by which the file download was instigated. May be NaN. */
 @property (nonatomic, readonly) NSInteger subscriptionIdentifier NS_SWIFT_NAME(subscriptionId);
 
 /** The URL to which the transfer’s metadata is **POST**ed when the download has finished. */

@@ -115,7 +115,10 @@
                         completionCallback:(void (^)(PIOTransfer * _Nonnull))completionCallback {
     return [self getTransferForID:transferIdentifier callback:^(NSError * _Nullable error,
                                                                 PIOTransfer * _Nullable transfer) {
-        if (transfer == nil) return errorCallback(error);
+        if (transfer == nil) {
+            if (errorCallback != nil) errorCallback(error);
+            return;
+        }
         
         [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
             [[PIOAPI getTransferForID:((PIOTransfer *)transfer).identifier
@@ -185,7 +188,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -212,7 +215,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -235,7 +238,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }

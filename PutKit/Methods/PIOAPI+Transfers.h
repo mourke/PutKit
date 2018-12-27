@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return    The request's `NSURLSessionDataTask` to be resumed.
  */
-+ (NSURLSessionDataTask *)listActiveTransfersWithCallback:(void (^)(NSError * _Nullable, NSArray<PIOTransfer *> *))callback NS_SWIFT_NAME(listTransfers(_:));
++ (NSURLSessionDataTask *)listActiveTransfersWithCallback:(void (^)(NSError * _Nullable, NSArray<PIOTransfer *> *))callback NS_SWIFT_NAME(activeTransfers(callback:));
 
 /**
  Starts a new transfer.
@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return    The request's `NSURLSessionDataTask` to be resumed.
  */
-+ (NSURLSessionDataTask *)retryTransferWithIdentifier:(NSInteger)transferIdentifier callback:(PIOErrorOnlyCallback)callback;
++ (NSURLSessionDataTask *)retryTransferWithIdentifier:(NSInteger)transferIdentifier callback:(PIOErrorOnlyCallback _Nullable)callback;
 
 /**
  Cancels and deletes the given transfers.
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return    The request's `NSURLSessionDataTask` to be resumed.
  */
-+ (NSURLSessionDataTask *)cancelTransfersWithIdentifiers:(NSArray<NSNumber *> *)transferIdentifiers callback:(PIOErrorOnlyCallback)callback;
++ (NSURLSessionDataTask *)cancelTransfersWithIdentifiers:(NSArray<NSNumber *> *)transferIdentifiers callback:(PIOErrorOnlyCallback _Nullable)callback;
 
 /**
  Cleans completed transfers from the list.
@@ -113,7 +113,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return    The request's `NSURLSessionDataTask` to be resumed.
  */
-+ (NSURLSessionDataTask *)cleanCompletedTransfersWithCallback:(PIOErrorOnlyCallback)callback;
++ (NSURLSessionDataTask *)cleanCompletedTransfersWithCallback:(PIOErrorOnlyCallback _Nullable)callback;
 
 @end
 

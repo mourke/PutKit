@@ -243,7 +243,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -297,7 +297,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -324,7 +324,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -352,7 +352,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -376,7 +376,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -463,7 +463,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -559,7 +559,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -696,7 +696,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -722,7 +722,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
@@ -745,7 +745,7 @@
         pk_response_validate(data, &error);
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            callback(error);
+            if (callback != nil) callback(error);
         }];
     }];
 }
